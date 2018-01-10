@@ -29,14 +29,16 @@ class Ping : public Task {
     bool run(const Message& message) override
     {
         task_enter
-
-        cout << F("Ping") << endl;
         
+        cout << F("Ping") << endl;
+
         auto pingData = PingData(this, 10);
 
-        //_pong->send<int>(pingData);
+        _pong->sendX<int>(pingData);
 
-        cout << F("Ping ") << pingData.number << endl;
+        _pong->send(Message(pingData));
+
+        task_yield();
 
         task_leave
     }
@@ -59,10 +61,14 @@ class Pong : public Task {
 
         if (auto pingData = message.get<PingData>())
         {
+            _sender = pingData->sender;
+            _value  = pingData->number;
+
             cout << F("Pong ") << pingData->number << endl;
 
-            //pingData->number = 20;
-            //result.set(20);
+            task_yield();
+
+            _sender->send(Message(20));
         }
         
         task_leave

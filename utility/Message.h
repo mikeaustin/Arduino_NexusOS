@@ -17,6 +17,30 @@ struct TypeInfo {
     
 };
 
+class Result {
+
+  public:
+
+    template<typename T>
+    explicit Result(T& data)
+     : _type(TypeInfo<T>::GetType()),
+       _data(&data)
+    { }
+
+    template<typename T>
+    void set(const T& data)
+    {
+        if (TypeInfo<T>::GetType() == _type) {
+            *static_cast<T*>(_data) = data;
+        }
+    }
+
+  private:
+
+    const void* _type = nullptr;
+    void* _data = nullptr;
+  
+};
 
 class Message {
 
