@@ -69,14 +69,14 @@ class Task : public List<Task>::Node {
     void _yield(void* context)
     {
         _context = context;
+        _timeout = 0;
     }
 
     void _sleep(void* context, uint32_t msecs = UINT32_MAX)
     {
+        _context = context;
         _abstime = millis();
         _timeout = msecs;
-
-        _yield(context);
     }
 
   protected:

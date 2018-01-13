@@ -8,13 +8,13 @@ Stream& cout = Serial;
 
 struct PingData {
 
-    PingData(Task* sender = nullptr, int number = 0)
+    PingData(Task* sender = nullptr, int value = 0)
      : sender(sender),
-       number(number)
+       value(value)
     { }
 
     Task* sender;
-    int   number;
+    int   value;
 
 };
 
@@ -30,15 +30,16 @@ class Ping : public Task {
     {
         task_enter
         
-        cout << F("Ping") << endl;
-
         auto pingData = PingData(this, 10);
 
-        _pong->sendX<int>(pingData);
+        _pong->send<>(pingData);
 
-        _pong->send(Message(pingData));
+        task_sleep();
 
-        task_yield();
+        if (auto value = message.get<int>())
+        {
+            cout << F("Pong ") << *value << endl;
+        }
 
         task_leave
     }
@@ -59,16 +60,13 @@ class Pong : public Task {
 
         task_sleep();
 
-        if (auto pingData = message.get<PingData>())
+        if ((_pingData = message.get<PingData>()))
         {
-            _sender = pingData->sender;
-            _value  = pingData->number;
-
-            cout << F("Pong ") << pingData->number << endl;
+            cout << F("Ping ") << _pingData->value << endl;
 
             task_yield();
 
-            _sender->send(Message(20));
+            _pingData->sender->send(_pingData->value * 2);
         }
         
         task_leave
@@ -76,8 +74,7 @@ class Pong : public Task {
 
   private:
 
-    Task* _sender = nullptr;
-    int   _value = 0;
+    const PingData* _pingData;
   
 };
 
