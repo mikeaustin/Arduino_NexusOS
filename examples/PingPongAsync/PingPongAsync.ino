@@ -60,13 +60,15 @@ class Pong : public Task {
 
         task_sleep();
 
-        if ((_pingData = message.get<PingData>()))
+        if (auto pingData = message.get<PingData>())
         {
-            cout << F("Ping ") << _pingData->value << endl;
+            _pingData = *pingData;
+
+            cout << F("Ping ") << _pingData.value << endl;
 
             task_yield();
 
-            _pingData->sender->send(_pingData->value * 2);
+            _pingData.sender->send(_pingData.value * 2);
         }
         
         task_leave
@@ -74,7 +76,7 @@ class Pong : public Task {
 
   private:
 
-    const PingData* _pingData;
+    PingData _pingData;
   
 };
 

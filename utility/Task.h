@@ -51,6 +51,14 @@ class Task : public List<Task>::Node {
         return value;
     }
 
+    void receive(const Message& message)
+    {
+        if (isRunning())
+        {
+            run(message);
+        }
+    }
+
     bool isRunning()
     {
         return _context != nullptr;
