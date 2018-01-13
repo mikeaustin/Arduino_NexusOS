@@ -44,7 +44,7 @@ bool Terminal::run(const Message& message)
         {
             const auto terminalData = TerminalData(key);
             
-            _target->send(Message(terminalData));
+            _target->send<>(terminalData);
         }
     }
     

@@ -38,12 +38,17 @@ class Task : public List<Task>::Node {
         _parent = parent;
     }
 
-    void send(const Message& message)
+    template<typename R = nullptr_t, typename T>
+    R send(const T& data)
     {
+        R value;
+
         if (isRunning())
         {
-            run(message);
+            run(Message(data, Result(value)));
         }
+
+        return value;
     }
 
     bool isRunning()

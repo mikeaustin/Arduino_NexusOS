@@ -21,6 +21,8 @@ class Result {
 
   public:
 
+    explicit Result() { }
+
     template<typename T>
     explicit Result(T& data)
      : _type(TypeInfo<T>::GetType()),
@@ -28,17 +30,20 @@ class Result {
     { }
 
     template<typename T>
-    void set(const T& data)
+    Result& operator =(const T& data)
     {
-        if (TypeInfo<T>::GetType() == _type) {
-            *static_cast<T*>(_data) = data;
+        if (TypeInfo<T>::GetType() == _type)
+        {
+            *static_cast<T* const>(_data) = data;
         }
+
+        return *this;
     }
 
   private:
 
-    const void* _type = nullptr;
-    void* _data = nullptr;
+    const void* const _type = nullptr;
+    void* const _data = nullptr;
   
 };
 
@@ -47,26 +52,30 @@ class Message {
   public:
 
     template<typename T>
-    explicit Message(const T& data)
-     : _type(TypeInfo<T>::GetType()),
+    explicit Message(const T& data, Result&& result = Result())
+     : result(result),
+       _type(TypeInfo<T>::GetType()),
        _data(&data)
     { }
 
     template<typename T>
     const T* get() const
     {
-        if (TypeInfo<T>::GetType() == _type) {
-            return static_cast<const T*>(_data);
+        if (TypeInfo<T>::GetType() == _type)
+        {
+            return static_cast<const T* const>(_data);
         }
 
         return nullptr;
     }
 
+    Result& result;
+
   private:
 
-    const void* _type = nullptr;
-    const void* _data = nullptr;
-  
+    const void* const _type = nullptr;
+    const void* const _data = nullptr;
+
 };
 
 #endif

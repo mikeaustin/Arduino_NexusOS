@@ -45,7 +45,7 @@ class TaskScheduler {
         {
             if (task->isReadyToRun(msecs))
             {
-                task->send(Message(timeoutData));
+                task->send<>(timeoutData);
 
                 if (!task->isRunning())
                 {
