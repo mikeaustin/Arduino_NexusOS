@@ -15,7 +15,15 @@ struct TypeInfo {
         return reinterpret_cast<const void*>(&GetType);
     }
     
+    void Archive(Stream& stream, const T& value) { }
 };
+
+template<>
+inline void TypeInfo<int>::Archive(Stream& stream, const int& value)
+{
+    stream << value;
+}
+
 
 class Result {
 

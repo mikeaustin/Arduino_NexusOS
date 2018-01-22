@@ -46,14 +46,26 @@ class TaskScheduler {
             if (task->isReadyToRun(msecs))
             {
                 task->send<>(timeoutData);
-
-                if (!task->isRunning())
-                {
-                    task = _tasks.remove(task, prev);
-                }
-                else prev = task;
             }
+
+            if (!task->isRunning())
+            {
+                task = _tasks.remove(task, prev);
+            }
+            else prev = task;
         }
+    }
+
+    int numberOfTasks()
+    {
+        int count = 0;
+
+        for (Task* task = _tasks.getFirst(); task != nullptr; task = task->getNext())
+        {
+            ++count;
+        }
+
+        return count;
     }
 
   private:

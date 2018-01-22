@@ -1,14 +1,21 @@
+//
+// Terminal.cpp
+//
+
 #include <Arduino.h>
 
 #include "Terminal.h"
-#include "TaskScheduler.h"
 
+#include "TaskScheduler.h"
 
 void Terminal::begin(Stream& stream)
 {
     _stream = &stream;
 
-    Scheduler.addTask(this);
+    if (!isRunning())
+    {
+        Scheduler.addTask(this);
+    }
 }
 
 bool Terminal::run(const Message& message)
@@ -25,9 +32,21 @@ bool Terminal::run(const Message& message)
         int c = _stream->read();
         int key = TerminalData::Unknown;
 
-        if (c == 10) continue;
-
         if (c == 13)
+        {
+            if (_stream->peek() == 10)
+            {
+                _stream->read();
+            }
+
+            c = 10;
+        }
+
+        if (c == 8)
+        {
+            key = TerminalData::KeyDelete;
+        }
+        if (c == 10)
         {
             key = TerminalData::KeyEnter;
         }
@@ -35,7 +54,7 @@ bool Terminal::run(const Message& message)
         {
             key = TerminalData::KeyEscape;
         }
-        else if (c >= 32 && c <= 127)
+        else if (c >= 32 && c <= 126)
         {
             key = c;
         }

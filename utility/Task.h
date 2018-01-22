@@ -74,6 +74,11 @@ class Task : public List<Task>::Node {
         return false;
     }
 
+    void exit()
+    {
+        _context = nullptr;
+    }
+
     void _yield(void* context)
     {
         _context = context;

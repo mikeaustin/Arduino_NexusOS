@@ -1,11 +1,10 @@
 #include <NexusOS.h>
 
-
 //
 // This example shows how to define a simple task to echo terminal input.
 //
 
-class Client : public Task {
+class Echo : public Task {
 
   public:
 
@@ -15,19 +14,23 @@ class Client : public Task {
 
         task_enter
 
+        cout << F("Type stuff. Characters are echoed back to you.") << endl;
+
         for (;;)
         {
             task_sleep();
 
             if (auto terminalData = message.get<TerminalData>())
             {
-                switch (terminalData->key)
+                if (terminalData->control)
                 {
-                    case TerminalData::KeyEnter:
-                        cout << endl; break;
-                    default:
-                        cout << (char) terminalData->key;
+                    switch (terminalData->key)
+                    {
+                        case TerminalData::KeyEnter:
+                            cout << endl; break;
+                    }
                 }
+                else cout << (char) terminalData->key;
             }
         }
         
@@ -36,18 +39,17 @@ class Client : public Task {
   
 };
 
-
 Terminal Console;
-Client Client;
+Echo Echo;
 
 void setup()
 {
     Serial.begin(9600);
 
     Console.begin(Serial);
-    Console.setTarget(&Client);
+    Console.setTarget(&Echo);
 
-    Scheduler.addTask(&Client, &Console);
+    Scheduler.addTask(&Echo, &Console);
 }
 
 void loop()

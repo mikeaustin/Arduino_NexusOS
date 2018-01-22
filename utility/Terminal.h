@@ -14,14 +14,19 @@ struct TerminalData {
 
     enum Key
     {
-        Unknown = 0, KeyEnter = 10, KeyEscape = 27
+        Unknown = 0,
+        KeyDelete = 8,
+        KeyEnter = 10,
+        KeyEscape = 27
     };
 
     TerminalData(int key)
-     : key(key)
+     : control(key < 32 || key == 127),
+       key(key)
     { }
 
-    const int key;
+    const bool control;
+    const int  key;
   
 };
 

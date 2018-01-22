@@ -24,9 +24,11 @@ inline Stream& endl(Stream& stream)
     return stream;
 }
 
+#include "utility/core/Stack.h"
 #include "utility/Message.h"
 #include "utility/Task.h"
 #include "utility/TaskScheduler.h"
 #include "utility/Terminal.h"
+#include "utility/Shell.h"
 
 #endif
