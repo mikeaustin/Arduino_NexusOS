@@ -52,6 +52,10 @@ class Shell : public Task {
 
   public:
 
+    Shell()
+     : Task(F("Shell"))
+    { }
+
     void begin(const Array<Command>& commands)
     {
         _commands = commands;

@@ -56,7 +56,7 @@ class TaskScheduler {
         }
     }
 
-    int numberOfTasks()
+    int numberOfTasks() const
     {
         int count = 0;
 
@@ -67,6 +67,8 @@ class TaskScheduler {
 
         return count;
     }
+
+    const List<Task> getTasks() const { return _tasks; }
 
   private:
 

@@ -38,6 +38,10 @@ class Terminal : public Task {
 
   public:
 
+    Terminal()
+     : Task(F("Terminal"))
+    { }
+
     virtual Stream& getStream() const { return *_stream; }
 
     void setTarget(Task* target) { _target = target; }

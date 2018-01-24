@@ -10,7 +10,12 @@ void tasks_invoke(Task* parent)
 {
     Stream& cout = parent->getStream();
 
-    cout << F("here") << endl;
+    List<Task> tasks = Scheduler.getTasks();
+
+    for (Task* task = tasks.getFirst(); task != nullptr; task = task->getNext())
+    {
+        cout << (int) task << F(" ") << task->getName() << endl;
+    }
 }
 
 const Command Commands[] PROGMEM =

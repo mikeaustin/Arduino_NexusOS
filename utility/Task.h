@@ -26,13 +26,20 @@ class Task : public List<Task>::Node {
 
   public:
 
-    Task() { }
+    Task(const __FlashStringHelper* name)
+     : _name(name)
+    { }
 
     virtual Stream& getStream() const
     {
         return _parent->getStream();
     }
 
+    const __FlashStringHelper* getName()
+    {
+        return _name;
+    }
+    
     void setParent(Task* parent)
     {
         _parent = parent;
@@ -93,6 +100,8 @@ class Task : public List<Task>::Node {
     }
 
   protected:
+
+    const __FlashStringHelper* _name;
 
     void*    _context = nullptr;
     Task*    _parent = nullptr;
