@@ -27,8 +27,6 @@ class List {
         
     };
 
-    List() { }
-
     void add(T* node)
     {
         if (_first == nullptr)

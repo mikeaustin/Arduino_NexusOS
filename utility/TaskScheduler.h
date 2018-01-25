@@ -45,7 +45,11 @@ class TaskScheduler {
         {
             if (task->isReadyToRun(msecs))
             {
+                uint32_t start = millis();
+
                 task->send<>(timeoutData);
+
+                _taskMillis += millis() - start;
             }
 
             if (!task->isRunning())
@@ -53,6 +57,15 @@ class TaskScheduler {
                 task = _tasks.remove(task, prev);
             }
             else prev = task;
+        }
+
+        if ((uint16_t) millis() - _lastMillis > 5000)
+        {
+            //Serial << ((uint32_t) _taskMillis * 100) / 5000 << F("%") << endl;
+            _cpuLoad = ((uint32_t) _taskMillis * 100) / 5000;
+
+            _lastMillis = millis();
+            _taskMillis = 0;
         }
     }
 
@@ -69,10 +82,16 @@ class TaskScheduler {
     }
 
     const List<Task> getTasks() const { return _tasks; }
+    const int getCPULoad() const { return _cpuLoad; }
 
   private:
 
     List<Task> _tasks;
+
+    uint16_t _taskMillis = 0;
+    uint16_t _lastMillis = 0;
+
+    int _cpuLoad = 0;
   
 };
 
