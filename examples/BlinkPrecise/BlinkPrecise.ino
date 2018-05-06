@@ -15,6 +15,8 @@ class Blink : public Task {
 
         pinMode(13, OUTPUT);
 
+        task_yield();
+
         for (;;)
         {
             if (auto timeoutData = message.get<TimeoutData>())
@@ -22,17 +24,17 @@ class Blink : public Task {
                 digitalWrite(13, HIGH);
                 task_sleep(timeoutData->msecs / 500 * 500 + 500 - timeoutData->msecs);
             }
-            
+
             if (auto timeoutData = message.get<TimeoutData>())
             {
                 digitalWrite(13, LOW);
                 task_sleep(timeoutData->msecs / 500 * 500 + 500 - timeoutData->msecs);
             }
         }
-        
+
         task_leave
     }
-  
+
 };
 
 Blink Blink;
@@ -40,7 +42,7 @@ Blink Blink;
 void setup()
 {
     Serial.begin(9600);
-    
+
     Scheduler.addTask(&Blink);
 }
 

@@ -1,7 +1,7 @@
 #include <NexusOS.h>
 
 //
-// This example shows how to define shell command and respond to them.
+// This example shows how to define shell commands and respond to them.
 //
 
 const char tasks_name[] PROGMEM = "tasks";

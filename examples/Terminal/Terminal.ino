@@ -26,17 +26,18 @@ class Echo : public Task {
                 {
                     switch (terminalData->key)
                     {
-                        case TerminalData::KeyEnter:
+                        case TerminalData::KeyEnter: {
                             cout << endl; break;
+                        }
                     }
                 }
                 else cout << (char) terminalData->key;
             }
         }
-        
+
         task_leave
     }
-  
+
 };
 
 Terminal Console;

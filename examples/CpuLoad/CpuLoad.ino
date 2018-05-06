@@ -1,7 +1,7 @@
 #include <NexusOS.h>
 
 //
-// This example shows how to define and create a task to blink an LED.
+// This example shows how to get and print the CPU load.
 //
 
 class FullLoad : public Task {
@@ -18,14 +18,14 @@ class FullLoad : public Task {
 
         for (;;)
         {
-            //delay(1);
+            // delay(1);
 
             task_sleep(0);
         }
-        
+
         task_leave
     }
-  
+
 };
 
 class PrintLoad : public Task {
@@ -46,10 +46,10 @@ class PrintLoad : public Task {
 
             Serial << Scheduler.getCPULoad() << endl;;
         }
-        
+
         task_leave
     }
-  
+
 };
 
 FullLoad FullLoad;

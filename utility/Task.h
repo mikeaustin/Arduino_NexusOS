@@ -18,15 +18,17 @@
 #define task_sleep(...) _sleep(&&LABEL_LINE(__LINE__), ##__VA_ARGS__); return false; LABEL_LINE(__LINE__):
 #define task_leave      _context = nullptr; return true;
 
+const char unnamed[] PROGMEM = "Unnamed";
+
 //
-// A cooperative-thread that can yield immediately or sleep for msecs seconds.
+// A cooperative-thread that can yield immediately or sleep for n milliseconds.
 //
 
 class Task : public List<Task>::Node {
 
   public:
 
-    Task(const __FlashStringHelper* name)
+    Task(const __FlashStringHelper* name = (__FlashStringHelper*) unnamed)
      : _name(name)
     { }
 
@@ -39,7 +41,7 @@ class Task : public List<Task>::Node {
     {
         return _name;
     }
-    
+
     void setParent(Task* parent)
     {
         _parent = parent;

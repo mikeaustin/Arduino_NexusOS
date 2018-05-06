@@ -1,7 +1,7 @@
 #include <NexusOS.h>
 
 //
-// This example shows how to define and create a task to blink an LED.
+// This example shows how to send messages to other tasks.
 //
 
 Stream& cout = Serial;
@@ -47,10 +47,10 @@ class Pong : public Task {
 
             message.result = *pingData * 2;
         }
-        
+
         task_leave
     }
-  
+
 };
 
 Pong Pong;

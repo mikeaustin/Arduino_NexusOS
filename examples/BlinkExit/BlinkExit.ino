@@ -1,7 +1,7 @@
 #include <NexusOS.h>
 
 //
-// This example shows how to define and create a task to blink an LED, and then
+// This example shows how to define and create a task to blink an LED, then
 // exiting after 5 iterations. Use member variables to persist state.
 //
 
@@ -19,18 +19,18 @@ class Blink : public Task {
         {
             digitalWrite(13, HIGH);
             task_sleep(500);
-        
+
             digitalWrite(13, LOW);
             task_sleep(500);
         }
-        
+
         task_leave
     }
 
   private:
 
     int i = 0;
-  
+
 };
 
 Blink Blink;
