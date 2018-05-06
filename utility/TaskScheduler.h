@@ -10,15 +10,14 @@
 #include "core/List.h"
 #include "Task.h"
 
-
 struct TimeoutData {
 
     explicit TimeoutData(uint32_t msecs)
      : msecs(msecs)
     { }
-  
+
     const uint32_t msecs;
-  
+
 };
 
 //
@@ -28,7 +27,7 @@ struct TimeoutData {
 class TaskScheduler {
 
   public:
-  
+
     void addTask(Task* task, Task* parent = nullptr)
     {
         _tasks.add(task);
@@ -40,7 +39,7 @@ class TaskScheduler {
     void tick(uint32_t msecs)
     {
         auto timeoutData = TimeoutData(msecs);
-        
+
         for (Task* task = _tasks.getFirst(), * prev = nullptr; task != nullptr; task = task->getNext())
         {
             if (task->isReadyToRun(msecs))
@@ -92,7 +91,7 @@ class TaskScheduler {
     uint16_t _lastMillis = 0;
 
     int _cpuLoad = 0;
-  
+
 };
 
 

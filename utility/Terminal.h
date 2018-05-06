@@ -9,7 +9,6 @@
 
 #include "Task.h"
 
-
 struct TerminalData {
 
     enum Key
@@ -27,7 +26,7 @@ struct TerminalData {
 
     const bool control;
     const int  key;
-  
+
 };
 
 //
@@ -47,7 +46,7 @@ class Terminal : public Task {
     void setTarget(Task* target) { _target = target; }
 
     void begin(Stream& stream);
-  
+
     bool run(const Message& message) override;
 
   private:
