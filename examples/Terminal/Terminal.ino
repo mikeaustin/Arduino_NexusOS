@@ -27,8 +27,11 @@ class Echo : public Task {
                     switch (terminalData->key)
                     {
                         case TerminalData::KeyEnter: {
-                            cout << endl; break;
-                        }
+                            cout << endl;
+                        } break;
+                        case TerminalData::KeyDelete: {
+                            cout << F("\b \b");
+                        } break;
                     }
                 }
                 else cout << (char) terminalData->key;

@@ -42,7 +42,7 @@ bool Terminal::run(const Message& message)
             c = 10;
         }
 
-        if (c == 8)
+        if (c == 8 || c == 127)
         {
             key = TerminalData::KeyDelete;
         }
@@ -62,10 +62,10 @@ bool Terminal::run(const Message& message)
         if (_target != nullptr && key != TerminalData::Unknown)
         {
             const auto terminalData = TerminalData(key);
-            
+
             _target->send<>(terminalData);
         }
     }
-    
+
     task_leave
 }
