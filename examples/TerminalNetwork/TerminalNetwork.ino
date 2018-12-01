@@ -2,12 +2,11 @@
 
 #include <Ethernet.h>
 
-
 //
 // This example shows how to define a simple task to echo terminal input.
 //
 
-class xClient : public Task {
+class Echo : public Task {
 
   public:
 
@@ -29,22 +28,33 @@ class xClient : public Task {
             {
                 switch (terminalData->key)
                 {
-                    case TerminalData::KeyEnter:
-                        cout << endl << F("] "); break;
+                    case TerminalData::KeyEnter: {
+                        cout << endl << F("] ");
+                    } break;
                     default:
                         cout << (char) terminalData->key;
                 }
             }
         }
-        
+
         task_leave
     }
-  
+
 };
 
+class TerminalClients {
+  TerminalClients() {
+    for (int i = 0; i < 4; i++) {
+      // _terminals[i].setTarget(x);
+    }
+  }
+
+  Terminal _terminals[4];
+  EthernetClient _clients[4];
+};
 
 Terminal Console;
-xClient xClient;
+Echo Echo;
 
 byte mac[] = {
     0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
@@ -73,15 +83,17 @@ void loop()
 
         Client = EthernetClient();
 
-        xClient.exit();
+        Echo.exit();
     }
 
     if (client && client != Client)
     {
-        Console.begin(client);
-        Console.setTarget(&xClient);
+        Serial << F("here") << endl;
 
-        Scheduler.addTask(&xClient, &Console);
+        Console.begin(client);
+        Console.setTarget(&Echo);
+
+        Scheduler.addTask(&Echo, &Console);
 
         Client = client;
     }

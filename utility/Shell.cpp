@@ -30,7 +30,7 @@ bool Shell::run(const Message& message)
                     {
                         if (_buffer.pop())
                         {
-                            cout << F("\b");
+                            cout << F("\b \b");
                         }
                     }
                     break;
@@ -71,6 +71,6 @@ bool Shell::run(const Message& message)
             }
         }
     }
-    
+
     task_leave
 }
